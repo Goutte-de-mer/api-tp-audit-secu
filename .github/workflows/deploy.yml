@@ -34,4 +34,4 @@ jobs:
         run: |
           php -S localhost:8000 -t public/ &
           sleep 5
-          docker run -t owasp/zap2docker-stable zap-baseline.py -t http://host.docker.internal:8000 -r zap_report.html
+          docker run -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://host.docker.internal:8000 -r zap_report.html

@@ -1,0 +1,37 @@
+name: CI Sécurité Web
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  security-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+
+      - name: Install dependencies
+        run: composer install --no-dev
+
+      - name: Analyse SAST avec Semgrep
+        uses: semgrep/semgrep-action@v1
+
+      - name: Audit des dépendances avec Composer
+        run: composer audit
+
+      - name: Symfony Security Check
+        run: |
+          curl -sSL https://get.symfony.com/cli/installer | bash
+          ~/.symfony5/bin/symfony security:check
+
+      - name: Scan DAST avec OWASP ZAP
+        run: |
+          php -S localhost:8000 -t public/ &
+          sleep 5
+          docker run -t owasp/zap2docker-stable zap-baseline.py -t http://host.docker.internal:8000 -r zap_report.html

@@ -34,7 +34,7 @@ jobs:
         run: |
           php -S localhost:8000 -t public/ &
           sleep 5
-          docker run -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://host.docker.internal:8000 -r zap_report.html
+          docker run -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://host.docker.internal:8000 -r zap_report.html
 
       - name: Upload ZAP Report
         uses: actions/upload-artifact@v4

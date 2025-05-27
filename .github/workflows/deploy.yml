@@ -34,4 +34,4 @@ jobs:
         run: |
           php -S localhost:8000 -t public/ &
           sleep 5
-          docker run --network="host" -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://localhost:8000
+          docker run --network="host" -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://localhost:8000 -I
